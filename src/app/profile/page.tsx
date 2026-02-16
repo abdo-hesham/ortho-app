@@ -4,17 +4,21 @@
 
 'use client';
 
+
+import { useState } from 'react';
 import { DashboardLayout } from '@/components';
 import { useAuth } from '@/context/AuthContext';
+import { AddPatientModal } from "@/components/dashboard/AddPatientModal";
 
 export default function ProfilePage() {
     const { user } = useAuth();
-
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    
     if (!user) return null;
 
     return (
-        <DashboardLayout>
-            <div className="max-w-4xl space-y-6">
+        <DashboardLayout onAddClick={() => setIsAddModalOpen(true)}>
+            <div className="max-w-7xl space-y-6 mx-auto">
                 <h1 className="text-3xl font-bold text-gray-900">Profile Settings</h1>
 
                 {/* Profile Information */}
@@ -29,20 +33,20 @@ export default function ProfilePage() {
                                 type="text"
                                 value={user.name}
                                 readOnly
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                                className="w-full px-4 py-2 text-black border border-gray-300 rounded-lg bg-gray-50"
                             />
                         </div>
 
-                        <div>
+                        {/* <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                             <input
                                 title='email'
                                 type="email"
                                 value={user.email}
                                 readOnly
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-black"
                             />
-                        </div>
+                        </div> */}
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
@@ -51,7 +55,7 @@ export default function ProfilePage() {
                                 type="tel"
                                 value={user.phone}
                                 readOnly
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                                className="w-full px-4 py-2 text-black border border-gray-300 rounded-lg bg-gray-50"
                             />
                         </div>
 
@@ -62,7 +66,7 @@ export default function ProfilePage() {
                                 type="text"
                                 value={user.specialty.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                                 readOnly
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                                className="w-full px-4 py-2 text-black border border-gray-300 rounded-lg bg-gray-50"
                             />
                         </div>
 
@@ -72,17 +76,17 @@ export default function ProfilePage() {
                                 title='role'
                                 value={user.role?.toUpperCase() || 'STAFF'}
                                 readOnly
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50"
+                                className="w-full px-4 py-2 text-black border border-gray-300 rounded-lg bg-gray-50"
                             />
                         </div>
 
-                        <div>
+                        {/* <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
                             <div className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
                                 <span className={`w-2 h-2 rounded-full ${user.isActive ? 'bg-green-500' : 'bg-red-500'}`}></span>
                                 <span>{user.isActive ? 'Active' : 'Inactive'}</span>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -92,18 +96,18 @@ export default function ProfilePage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="p-4 bg-blue-50 rounded-lg">
-                            <p className="text-sm text-gray-600 mb-1">Account Created</p>
-                            <p className="font-semibold">{user.createdAt?.toLocaleDateString() || 'N/A'}</p>
+                            <p className="text-sm text-black mb-1">Account Created</p>
+                            <p className="font-semibold text-black">{user.createdAt?.toLocaleDateString() || 'N/A'}</p>
                         </div>
 
                         <div className="p-4 bg-green-50 rounded-lg">
-                            <p className="text-sm text-gray-600 mb-1">Last Updated</p>
-                            <p className="font-semibold">{user.updatedAt?.toLocaleDateString() || 'N/A'}</p>
+                            <p className="text-sm text-black mb-1">Last Updated</p>
+                            <p className="font-semibold text-black">{user.updatedAt?.toLocaleDateString() || 'N/A'}</p>
                         </div>
 
                         <div className="p-4 bg-purple-50 rounded-lg">
-                            <p className="text-sm text-gray-600 mb-1">Last Login</p>
-                            <p className="font-semibold">
+                            <p className="text-sm text-black mb-1">Last Login</p>
+                            <p className="font-semibold text-black">
                                 {user.lastLoginAt?.toLocaleDateString() || 'N/A'}
                             </p>
                         </div>
@@ -111,7 +115,7 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Actions */}
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                {/* <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                     <h2 className="text-xl font-semibold text-gray-900 mb-4">Actions</h2>
                     <div className="space-y-3">
                         <button className="w-full md:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
@@ -121,8 +125,18 @@ export default function ProfilePage() {
                             Change Password
                         </button>
                     </div>
-                </div>
+                </div> */}
             </div>
+
+            {/* Add Patient Modal */}
+            <AddPatientModal
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
+                onSuccess={() => {
+                    // Optional: Refresh data or show notification
+                    console.log("Patient added from profile page");
+                }}
+            />
         </DashboardLayout>
     );
 }
