@@ -1,0 +1,15 @@
+<svg width="152" height="152" viewBox="0 0 152 152" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="152" height="152" fill="#2563eb" rx="22.8"/>
+  
+  <!-- Medical Cross -->
+  <g transform="translate(76, 76)">
+    <!-- Vertical bar -->
+    <rect x="-12.16" y="-42.56" width="24.32" height="85.12" fill="white" rx="3.04"/>
+    <!-- Horizontal bar -->
+    <rect x="-42.56" y="-12.16" width="85.12" height="24.32" fill="white" rx="3.04"/>
+  </g>
+  
+  <!-- OrthoCare Text -->
+  <text x="76" y="129.2" font-family="Arial, sans-serif" font-size="15.200000000000001" font-weight="bold" fill="white" text-anchor="middle">OC</text>
+</svg>
