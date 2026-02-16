@@ -227,7 +227,7 @@ export function InstallPrompt() {
                 <button
                     onClick={handleInstallClick}
                     className="group flex items-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-2xl hover:shadow-blue-500/50 rounded-2xl px-5 py-4 transition-all duration-300 hover:scale-105 active:scale-95"
-                    aria-label="Install OrthoCare App"
+                    aria-label="Install Medidect App"
                 >
                     {/* Icon */}
                     <div className="flex-shrink-0 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-colors">

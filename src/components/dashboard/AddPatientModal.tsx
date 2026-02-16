@@ -215,22 +215,22 @@ export function AddPatientModal({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4">
-            {/* Backdrop - only show on desktop */}
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-0 sm:p-4">
+            {/* Backdrop */}
             <div
-                className="hidden sm:block absolute inset-0 bg-black/50 backdrop-blur-sm"
+                className="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-all duration-300"
                 onClick={isSubmitting ? undefined : onClose}
             />
 
             {/* Modal */}
-            <div className="relative z-[9999] bg-white sm:rounded-2xl shadow-2xl w-full h-full sm:max-w-3xl sm:w-full sm:h-auto sm:max-h-[90vh] overflow-y-auto">
+            <div className="relative z-[70] bg-white sm:rounded-3xl shadow-2xl shadow-blue-900/10 w-full h-full sm:h-[85vh] sm:max-w-3xl flex flex-col overflow-hidden ring-1 ring-slate-900/5 transform transition-all scale-100">
                 {/* Success Overlay */}
                 {showSuccess && (
-                    <div className="absolute inset-0 bg-white/95 backdrop-blur-sm z-10 flex items-center justify-center sm:rounded-2xl">
-                        <div className="text-center">
-                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="absolute inset-0 bg-white/95 backdrop-blur-sm z-[80] flex items-center justify-center transition-all duration-300">
+                        <div className="text-center transform scale-100 transition-transform">
+                            <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6 ring-8 ring-green-50/50">
                                 <svg
-                                    className="w-8 h-8 text-green-600"
+                                    className="w-10 h-10 text-green-500"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
@@ -238,340 +238,311 @@ export function AddPatientModal({
                                     <path
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        strokeWidth={2}
+                                        strokeWidth={2.5}
                                         d="M5 13l4 4L19 7"
                                     />
                                 </svg>
                             </div>
-                            <h3 className="text-xl font-semibold text-gray-900">
-                                Patient Created Successfully!
+                            <h3 className="text-2xl font-bold text-slate-800">
+                                Patient Added!
                             </h3>
-                            <p className="text-gray-600 mt-2">Redirecting...</p>
+                            <p className="text-slate-500 mt-2 font-medium">Redirecting you back...</p>
                         </div>
                     </div>
                 )}
 
                 {/* Header */}
-                <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 sm:px-6 py-3 sm:py-4 sm:rounded-t-2xl z-10">
-                    <div className="flex items-center justify-between">
-                        <div className="flex-1 min-w-0">
-                            <h2 className="text-xl sm:text-2xl font-bold truncate">Add New Patient</h2>
-                            <p className="text-blue-100 text-xs sm:text-sm mt-1 line-clamp-1">
-                                Enter patient information below or use voice dictation
-                            </p>
-                        </div>
-                        {/* Close button */}
-                        <button
-                            onClick={onClose}
-                            disabled={isSubmitting}
-                            className="p-2 hover:bg-white/20 rounded-full transition-colors disabled:opacity-50 ml-4"
-                            aria-label="Close modal"
-                        >
-                            <svg
-                                className="w-6 h-6"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
+                <div className="flex-none px-6 py-4 bg-white/80 backdrop-blur-md border-b border-slate-100 z-10 flex items-center justify-between sticky top-0">
+                    <div>
+                        <h2 className="text-xl font-bold text-slate-900">Add New Patient</h2>
+                        <p className="text-slate-500 text-xs mt-0.5">
+                            Fill in the details below
+                        </p>
                     </div>
+                    {/* Close button */}
+                    <button
+                        onClick={onClose}
+                        disabled={isSubmitting}
+                        className="p-2 -mr-2 bg-gray-200 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-full transition-all duration-200 disabled:opacity-50"
+                        aria-label="Close modal"
+                    >
+                        <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </button>
                 </div>
 
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-                    {/* Error Alert */}
-                    {submitError && (
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                            <div className="flex items-start gap-3">
-                                <svg
-                                    className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                </svg>
-                                <div>
-                                    <h3 className="font-semibold text-red-900">
-                                        Error Creating Patient
-                                    </h3>
-                                    <p className="text-red-700 text-sm mt-1">{submitError}</p>
+                {/* Form Content */}
+                <div className="flex-1 overflow-y-auto bg-slate-50/50">
+                    <form onSubmit={handleSubmit} className="p-6 space-y-8">
+                        {/* Error Alert */}
+                        {submitError && (
+                            <div className="bg-red-50 border border-red-100 rounded-2xl p-4 animate-in fade-in slide-in-from-top-2">
+                                <div className="flex items-start gap-3">
+                                    <svg
+                                        className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                    <div>
+                                        <h3 className="font-semibold text-red-900 text-sm">
+                                            Submission Error
+                                        </h3>
+                                        <p className="text-red-700 text-sm mt-1">{submitError}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                    {/* Voice Dictation Guide */}
-                   
-                    {/* Basic Information */}
-                    <section>
-                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 pb-2 border-b border-gray-200">
-                            Basic Information
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <FormInputWithVoice
-                                label="Patient Name"
-                                name="patientName"
-                                value={formData.patientName}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('patientName', text)}
-                                error={errors.patientName}
-                                placeholder="Enter full name"
-                                required
-                                disabled={isSubmitting}
-                            />
-                            <FormInputWithVoice
-                                label="Age"
-                                name="age"
-                                type="number"
-                                value={formData.age}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('age', text)}
-                                error={errors.age}
-                                placeholder="Enter age"
-                                min="1"
-                                max="150"
-                                required
-                                disabled={isSubmitting}
-                            />
-                            <div className="md:col-span-2">
+                        {/* Basic Information */}
+                        <section className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-5 flex items-center gap-2">
+                                <span className="w-1.5 h-4 bg-blue-500 rounded-full"></span>
+                                Basic Details
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <FormInputWithVoice
-                                    label="Date"
-                                    name="date"
-                                    type="date"
-                                    value={formData.date}
+                                    label="Patient Name"
+                                    name="patientName"
+                                    value={formData.patientName}
                                     onChange={handleChange}
-                                    onVoiceTranscript={(text) => handleFieldVoice('date', text)}
-                                    error={errors.date}
+                                    onVoiceTranscript={(text) => handleFieldVoice('patientName', text)}
+                                    error={errors.patientName}
+                                    placeholder="Enter full name"
+                                    required
+                                    disabled={isSubmitting}
+                                />
+                                <FormInputWithVoice
+                                    label="Age"
+                                    name="age"
+                                    type="number"
+                                    value={formData.age}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('age', text)}
+                                    error={errors.age}
+                                    placeholder="Enter age"
+                                    min="1"
+                                    max="150"
+                                    required
+                                    disabled={isSubmitting}
+                                />
+                                <div className="md:col-span-2">
+                                    <FormInputWithVoice
+                                        label="Date"
+                                        name="date"
+                                        type="date"
+                                        value={formData.date}
+                                        onChange={handleChange}
+                                        onVoiceTranscript={(text) => handleFieldVoice('date', text)}
+                                        error={errors.date}
+                                        required
+                                        disabled={isSubmitting}
+                                    />
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Medical Information */}
+                        <section className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-5 flex items-center gap-2">
+                                <span className="w-1.5 h-4 bg-purple-500 rounded-full"></span>
+                                Medical Info
+                            </h3>
+                            <div className="space-y-5">
+                                <FormTextareaWithVoice
+                                    label="Diagnosis"
+                                    name="diagnosis"
+                                    value={formData.diagnosis}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('diagnosis', text)}
+                                    error={errors.diagnosis}
+                                    placeholder="Enter diagnosis details"
+                                    rows={2}
+                                    required
+                                    disabled={isSubmitting}
+                                />
+                                <FormTextareaWithVoice
+                                    label="Procedure"
+                                    name="procedure"
+                                    value={formData.procedure}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('procedure', text)}
+                                    error={errors.procedure}
+                                    placeholder="Enter procedure details"
+                                    rows={2}
+                                    required
+                                    disabled={isSubmitting}
+                                />
+                                <FormInputWithVoice
+                                    label="Hospital"
+                                    name="hospital"
+                                    value={formData.hospital}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('hospital', text)}
+                                    error={errors.hospital}
+                                    placeholder="Enter hospital name"
                                     required
                                     disabled={isSubmitting}
                                 />
                             </div>
-                        </div>
-                    </section>
+                        </section>
 
-                    {/* Medical Information */}
-                    <section>
-                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 pb-2 border-b border-gray-200">
-                            Medical Information
-                        </h3>
-                        <div className="space-y-4">
-                            <FormTextareaWithVoice
-                                label="Diagnosis"
-                                name="diagnosis"
-                                value={formData.diagnosis}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('diagnosis', text)}
-                                error={errors.diagnosis}
-                                placeholder="Enter diagnosis details"
-                                rows={2}
-                                required
-                                disabled={isSubmitting}
-                            />
-                            <FormTextareaWithVoice
-                                label="Procedure"
-                                name="procedure"
-                                value={formData.procedure}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('procedure', text)}
-                                error={errors.procedure}
-                                placeholder="Enter procedure details"
-                                rows={2}
-                                required
-                                disabled={isSubmitting}
-                            />
-                            <FormInputWithVoice
-                                label="Hospital"
-                                name="hospital"
-                                value={formData.hospital}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('hospital', text)}
-                                error={errors.hospital}
-                                placeholder="Enter hospital name"
-                                required
-                                disabled={isSubmitting}
-                            />
-                        </div>
-                    </section>
+                        {/* Follow-up Plans */}
+                        <section className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+                             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-5 flex items-center gap-2">
+                                <span className="w-1.5 h-4 bg-emerald-500 rounded-full"></span>
+                                Follow-up Plan
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <FormInputWithVoice
+                                    label="1st Follow-up"
+                                    name="followUpFirst"
+                                    value={formData.followUpFirst}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('followUpFirst', text)}
+                                    placeholder="e.g. Feb 19"
+                                    disabled={isSubmitting}
+                                />
+                                <FormInputWithVoice
+                                    label="2nd Follow-up"
+                                    name="followUpSecond"
+                                    value={formData.followUpSecond}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('followUpSecond', text)}
+                                    placeholder="e.g. Mar 18"
+                                    disabled={isSubmitting}
+                                />
+                                <FormInputWithVoice
+                                    label="3rd Follow-up"
+                                    name="followUpThird"
+                                    value={formData.followUpThird}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('followUpThird', text)}
+                                    placeholder="e.g. May 15"
+                                    disabled={isSubmitting}
+                                />
+                            </div>
+                        </section>
 
-                    {/* Follow-up Plans */}
-                    <section>
-                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 pb-2 border-b border-gray-200">
-                            Planned Follow-ups
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <FormInputWithVoice
-                                label="First Follow-up"
-                                name="followUpFirst"
-                                value={formData.followUpFirst}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('followUpFirst', text)}
-                                placeholder="e.g., Week 2 - Feb 19"
-                                disabled={isSubmitting}
-                            />
-                            <FormInputWithVoice
-                                label="Second Follow-up"
-                                name="followUpSecond"
-                                value={formData.followUpSecond}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('followUpSecond', text)}
-                                placeholder="e.g., Week 6 - Mar 18"
-                                disabled={isSubmitting}
-                            />
-                            <FormInputWithVoice
-                                label="Third Follow-up"
-                                name="followUpThird"
-                                value={formData.followUpThird}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('followUpThird', text)}
-                                placeholder="e.g., Month 3 - May 15"
-                                disabled={isSubmitting}
-                            />
-                        </div>
-                    </section>
+                        {/* Treatment Details */}
+                        <section className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+                             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-5 flex items-center gap-2">
+                                <span className="w-1.5 h-4 bg-amber-500 rounded-full"></span>
+                                Specifics
+                            </h3>
+                            <div className="space-y-4">
+                                <FormInputWithVoice
+                                    label="K-Wire Removal"
+                                    name="kWireRemoval"
+                                    value={formData.kWireRemoval}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('kWireRemoval', text)}
+                                    placeholder="e.g., Week 6 post-op"
+                                    disabled={isSubmitting}
+                                />
+                                <FormInputWithVoice
+                                    label="Splint Change/Removal"
+                                    name="splintChangeRemoval"
+                                    value={formData.splintChangeRemoval}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('splintChangeRemoval', text)}
+                                    placeholder="e.g., Week 2, Week 4"
+                                    disabled={isSubmitting}
+                                />
+                                <FormInputWithVoice
+                                    label="Type & Suture Removal"
+                                    name="typeAndSutureRemoval"
+                                    value={formData.typeAndSutureRemoval}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('typeAndSutureRemoval', text)}
+                                    placeholder="e.g., Week 3 - Absorbable sutures"
+                                    disabled={isSubmitting}
+                                />
+                            </div>
+                        </section>
 
-                    {/* Treatment Details */}
-                    <section>
-                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 pb-2 border-b border-gray-200">
-                            Treatment Details
-                        </h3>
-                        <div className="space-y-4">
-                            <FormInputWithVoice
-                                label="K-Wire Removal"
-                                name="kWireRemoval"
-                                value={formData.kWireRemoval}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('kWireRemoval', text)}
-                                placeholder="e.g., Week 6 post-op"
-                                disabled={isSubmitting}
-                            />
-                            <FormInputWithVoice
-                                label="Splint Change/Removal"
-                                name="splintChangeRemoval"
-                                value={formData.splintChangeRemoval}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('splintChangeRemoval', text)}
-                                placeholder="e.g., Week 2, Week 4"
-                                disabled={isSubmitting}
-                            />
-                            <FormInputWithVoice
-                                label="Type & Suture Removal"
-                                name="typeAndSutureRemoval"
-                                value={formData.typeAndSutureRemoval}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('typeAndSutureRemoval', text)}
-                                placeholder="e.g., Week 3 - Absorbable sutures"
-                                disabled={isSubmitting}
-                            />
-                        </div>
-                    </section>
+                        {/* Additional Information */}
+                        <section className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+                             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-5 flex items-center gap-2">
+                                <span className="w-1.5 h-4 bg-slate-400 rounded-full"></span>
+                                Notes
+                            </h3>
+                            <div className="space-y-4">
+                                <FormTextareaWithVoice
+                                    label="Expectations"
+                                    name="expectations"
+                                    value={formData.expectations}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('expectations', text)}
+                                    placeholder="e.g., Full recovery in 12 weeks"
+                                    rows={2}
+                                    maxLength={500}
+                                    showCharCount
+                                    disabled={isSubmitting}
+                                />
+                                <FormTextareaWithVoice
+                                    label="Follow-up Parameters"
+                                    name="followUpParameters"
+                                    value={formData.followUpParameters}
+                                    onChange={handleChange}
+                                    onVoiceTranscript={(text) => handleFieldVoice('followUpParameters', text)}
+                                    placeholder="e.g., Assess grip strength"
+                                    rows={2}
+                                    maxLength={500}
+                                    showCharCount
+                                    disabled={isSubmitting}
+                                />
+                            </div>
+                        </section>
+                    </form>
+                </div>
 
-                    {/* Additional Information */}
-                    <section>
-                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 pb-2 border-b border-gray-200">
-                            Additional Information
-                        </h3>
-                        <div className="space-y-4">
-                            <FormTextareaWithVoice
-                                label="Expectations"
-                                name="expectations"
-                                value={formData.expectations}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('expectations', text)}
-                                placeholder="e.g., Full range of motion recovery in 12 weeks"
-                                rows={2}
-                                maxLength={500}
-                                showCharCount
-                                disabled={isSubmitting}
-                            />
-                            <FormTextareaWithVoice
-                                label="Follow-up Parameters"
-                                name="followUpParameters"
-                                value={formData.followUpParameters}
-                                onChange={handleChange}
-                                onVoiceTranscript={(text) => handleFieldVoice('followUpParameters', text)}
-                                placeholder="e.g., Monitor healing, assess grip strength weekly"
-                                rows={2}
-                                maxLength={500}
-                                showCharCount
-                                disabled={isSubmitting}
-                            />
-                        </div>
-                    </section>
-
-                    {/* Footer */}
-                    <div className="sticky bottom-0 bg-gray-50 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-3 sm:py-4 sm:rounded-b-2xl border-t border-gray-200 z-10">
-                        <div className="flex justify-end gap-2 sm:gap-3">
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                disabled={isSubmitting}
-                                className="px-4 sm:px-6 py-2 sm:py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                disabled={isSubmitting}
-                                className="px-4 sm:px-6 py-2 sm:py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm sm:text-base"
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        <svg
-                                            className="animate-spin h-5 w-5"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <circle
-                                                className="opacity-25"
-                                                cx="12"
-                                                cy="12"
-                                                r="10"
-                                                stroke="currentColor"
-                                                strokeWidth="4"
-                                            />
-                                            <path
-                                                className="opacity-75"
-                                                fill="currentColor"
-                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                            />
-                                        </svg>
-                                        Creating...
-                                    </>
-                                ) : (
-                                    <>
-                                        <svg
-                                            className="w-5 h-5"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M5 13l4 4L19 7"
-                                            />
-                                        </svg>
-                                        Create Patient
-                                    </>
-                                )}
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                {/* Footer */}
+                <div className="flex-none p-4 bg-white border-t border-slate-100 z-10 flex justify-end gap-3 sticky bottom-0">
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        disabled={isSubmitting}
+                        className="px-6 py-2.5 bg-slate-50 text-slate-700 rounded-xl hover:bg-slate-100 border border-slate-200 transition-colors font-semibold text-sm disabled:opacity-50"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        onClick={(e) => handleSubmit(e as any)}
+                        disabled={isSubmitting}
+                        className="px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition-all transform active:scale-95 font-semibold text-sm disabled:opacity-50 flex items-center gap-2"
+                    >
+                        {isSubmitting ? (
+                            <>
+                                <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                </svg>
+                                Saving...
+                            </>
+                        ) : (
+                            'Save Patient'
+                        )}
+                    </button>
+                </div>
             </div>
         </div>
     );

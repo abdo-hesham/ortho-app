@@ -6,7 +6,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Offline - OrthoCare",
+    title: "Offline - Medidect",
     description: "You are currently offline",
 };
 
@@ -144,7 +144,7 @@ export default function OfflinePage() {
 
                 {/* App Info */}
                 <div className="mt-6 text-center text-sm text-gray-500">
-                    <p>OrthoCare Dashboard</p>
+                    <p>Medidect Dashboard</p>
                     <p className="text-xs mt-1">PWA Offline Mode</p>
                 </div>
             </div>

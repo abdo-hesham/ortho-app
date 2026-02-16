@@ -12,9 +12,10 @@ import { LoadingSpinner } from '../ui/LoadingSpinner';
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
+    onAddClick?: () => void;
 }
 
-export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+export const DashboardLayout = ({ children, onAddClick }: DashboardLayoutProps) => {
     const { loading } = useRequireAuth();
 
     if (loading) {
@@ -24,13 +25,13 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     return (
         <div className="min-h-screen bg-gray-50">
             <DashboardHeader />
-            <div className="flex">
-                <DashboardSidebar />
-                <main className="flex-1 p-4 sm:p-8 pb-24 sm:pb-8">
+            <div className="flex justify-center items-center">
+                {/* <DashboardSidebar /> */}
+                <main className="flex-1 p-4 sm:p-8 pb-24 sm:pb-8 w-full mx-auto">
                     {children}
                 </main>
             </div>
-            <MobileBottomNav />
+            <MobileBottomNav onAddClick={onAddClick} />
         </div>
     );
 };

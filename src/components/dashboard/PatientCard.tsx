@@ -16,49 +16,65 @@ export function PatientCard({ patient, onClick }: PatientCardProps) {
     const formatDate = (date?: Date) => {
         if (!date) return 'N/A';
         return new Intl.DateTimeFormat("en-US", {
-            year: "numeric",
             month: "short",
             day: "numeric",
         }).format(date);
     };
 
+    const getInitials = (name: string) => {
+        return name
+            .split(' ')
+            .map((n) => n[0])
+            .slice(0, 2)
+            .join('')
+            .toUpperCase();
+    };
+
     return (
         <div
             onClick={() => onClick(patient)}
-            className="bg-white rounded-lg border border-gray-200 p-4 cursor-pointer hover:shadow-md transition-shadow"
+            className="group bg-white rounded-2xl border border-slate-100 p-4 shadow-sm hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300 cursor-pointer"
         >
-            {/* Patient Name and Date */}
-            <div className="flex items-start justify-between mb-3">
-                <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900">
+            <div className="flex items-center gap-4 mb-4">
+                {/* Avatar Placeholder */}
+                <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg shadow-sm group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                    {getInitials(patient.patientName)}
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                    <h3 className="text-base font-bold text-slate-800 truncate group-hover:text-blue-600 transition-colors">
                         {patient.patientName}
                     </h3>
-                    <p className="text-sm text-gray-500 mt-0.5">
-                        {patient.hospital}
+                    <p className="text-xs text-slate-500 font-medium truncate">
+                        {patient.diagnosis}
                     </p>
+                    <div className="flex items-center gap-1 mt-1">
+                        <svg className="w-3 h-3 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <span className="text-xs font-semibold text-slate-700">4.8</span>
+                        <span className="text-[10px] text-slate-400 ml-1">({patient.hospital})</span>
+                    </div>
                 </div>
-                <div className="text-sm text-gray-500 ml-2 flex-shrink-0">
-                    {formatDate(patient.date)}
+
+                <div className="flex flex-col items-end gap-1">
+                     <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-50 text-blue-600 border border-blue-100">
+                        {patient.procedure || 'Consultation'}
+                     </span>
                 </div>
             </div>
 
-            {/* Diagnosis and Procedure */}
-            <div className="space-y-2">
-                <div>
-                    <span className="text-sm font-medium text-gray-700">Diagnosis: </span>
-                    <span className="text-sm text-gray-600">{patient.diagnosis}</span>
+            <div className="flex items-center justify-between pt-3 border-t border-slate-50">
+                <div className="flex items-center text-slate-400 text-xs font-medium">
+                   <svg className="w-3.5 h-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                   </svg>
+                   {formatDate(patient.date)}
                 </div>
-                <div>
-                    <span className="text-sm font-medium text-gray-700">Procedure: </span>
-                    <span className="text-sm text-gray-600">{patient.procedure || 'N/A'}</span>
-                </div>
-            </div>
 
-            {/* Created Date */}
-            <div className="mt-3 pt-3 border-t border-gray-100">
-                <p className="text-xs text-gray-400">
-                    Created {formatDate(patient.createdAt)}
-                </p>
+                <span className="text-xs font-bold text-blue-600 group-hover:translate-x-1 transition-transform cursor-pointer">
+                    View Details →
+                </span>
             </div>
         </div>
     );

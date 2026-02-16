@@ -2,7 +2,7 @@
  * Application Constants
  */
 
-export const APP_NAME = "OrthoCare Dashboard";
+export const APP_NAME = "Medidect Dashboard";
 export const APP_VERSION = "1.0.0";
 
 // Firestore Collection Names

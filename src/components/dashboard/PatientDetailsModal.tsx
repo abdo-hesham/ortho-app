@@ -37,92 +37,113 @@ export function PatientDetailsModal({
     if (!isOpen || !patient) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-0 sm:p-4">
             {/* Backdrop */}
             <div
-                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                className="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-all duration-300"
                 onClick={onClose}
             />
 
             {/* Modal */}
-            <div className="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="relative z-[70] bg-white sm:rounded-3xl shadow-2xl shadow-blue-900/10 w-full h-full sm:h-[85vh] sm:max-w-3xl flex flex-col overflow-hidden ring-1 ring-slate-900/5 transform transition-all scale-100">
                 {/* Header */}
-                <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4 rounded-t-2xl">
-                    <div className="flex items-center justify-between">
+                <div className="flex-none px-6 py-4 bg-white/80 backdrop-blur-md border-b border-slate-100 z-10 flex items-center justify-between sticky top-0">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm ring-4 ring-white shadow-sm">
+                            {patient.patientName.charAt(0)}
+                        </div>
                         <div>
-                            <h2 className="text-2xl font-bold">{patient.patientName}</h2>
-                            <p className="text-blue-100 text-sm mt-1">
-                                Patient ID: {patient.id}
+                            <h2 className="text-xl font-bold text-slate-900 leading-tight">
+                                {patient.patientName}
+                            </h2>
+                            <p className="text-sm text-slate-500 font-medium mt-0.5">
+                                {patient.hospital}
                             </p>
                         </div>
-                        <button
-                            onClick={onClose}
-                            className="p-2 hover:bg-white/20 rounded-full transition-colors"
-                            aria-label="Close modal"
-                        >
-                            <svg
-                                className="w-6 h-6"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
                     </div>
+                    
+                    {/* Close button */}
+                    <button
+                        onClick={onClose}
+                        className="p-2 -mr-2 bg-gray-100 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-all duration-200"
+                        aria-label="Close modal"
+                    >
+                        <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </button>
                 </div>
 
                 {/* Content */}
-                <div className="p-6 space-y-6">
+                <div className="flex-1 overflow-y-auto bg-slate-50/50 p-6 space-y-6">
                     {/* Basic Information */}
-                    <Section title="Basic Information">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Section 
+                        title="Basic Details" 
+                        colorClass="bg-blue-500"
+                    >
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                             <Field label="Age" value={`${patient.age} years`} />
                             <Field label="Date" value={formatDate(patient.date)} />
-                            <Field
-                                label="Created At"
-                                value={formatDateTime(patient.createdAt)}
-                            />
+                            <Field label="Created At" value={formatDateTime(patient.createdAt)} />
                         </div>
                     </Section>
 
                     {/* Medical Information */}
-                    <Section title="Medical Information">
-                        <div className="space-y-4">
-                            <Field label="Diagnosis" value={patient.diagnosis} />
-                            <Field label="Procedure" value={patient.procedure || 'N/A'} />
-                            <Field label="Hospital" value={patient.hospital} />
+                    <Section 
+                        title="Medical Info" 
+                        colorClass="bg-purple-500"
+                    >
+                        <div className="space-y-5">
+                            <Field label="Diagnosis" value={patient.diagnosis} highlight />
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <Field label="Procedure" value={patient.procedure || 'N/A'} />
+                                <Field label="Hospital" value={patient.hospital} />
+                            </div>
                         </div>
                     </Section>
 
                     {/* Follow-up Information */}
                     {patient.plannedFollowUps && (
-                        <Section title="Planned Follow-ups">
+                        <Section 
+                            title="Follow-up Plan" 
+                            colorClass="bg-emerald-500"
+                        >
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <Field
-                                    label="First Follow-up"
-                                    value={patient.plannedFollowUps.first || "Not scheduled"}
+                                <StatusCard 
+                                    label="1st Follow-up" 
+                                    value={patient.plannedFollowUps.first} 
+                                    index={1}
                                 />
-                                <Field
-                                    label="Second Follow-up"
-                                    value={patient.plannedFollowUps.second || "Not scheduled"}
+                                <StatusCard 
+                                    label="2nd Follow-up" 
+                                    value={patient.plannedFollowUps.second} 
+                                    index={2}
                                 />
-                                <Field
-                                    label="Third Follow-up"
-                                    value={patient.plannedFollowUps.third || "Not scheduled"}
+                                <StatusCard 
+                                    label="3rd Follow-up" 
+                                    value={patient.plannedFollowUps.third} 
+                                    index={3}
                                 />
                             </div>
                         </Section>
                     )}
 
                     {/* Treatment Details */}
-                    <Section title="Treatment Details">
-                        <div className="space-y-4">
+                    <Section 
+                        title="Specifics" 
+                        colorClass="bg-amber-500"
+                    >
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             {patient.kWireRemoval && (
                                 <Field label="K-Wire Removal" value={patient.kWireRemoval} />
                             )}
@@ -143,8 +164,11 @@ export function PatientDetailsModal({
 
                     {/* Additional Information */}
                     {(patient.expectations || patient.followUpParameters) && (
-                        <Section title="Additional Information">
-                            <div className="space-y-4">
+                        <Section 
+                            title="Notes" 
+                            colorClass="bg-slate-400"
+                        >
+                            <div className="space-y-5">
                                 {patient.expectations && (
                                     <Field label="Expectations" value={patient.expectations} />
                                 )}
@@ -160,18 +184,13 @@ export function PatientDetailsModal({
                 </div>
 
                 {/* Footer */}
-                <div className="sticky bottom-0 bg-gray-50 px-6 py-4 rounded-b-2xl border-t border-gray-200">
-                    <div className="flex justify-end gap-3">
-                        <button
-                            onClick={onClose}
-                            className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-                        >
-                            Close
-                        </button>
-                        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                            Edit Patient
-                        </button>
-                    </div>
+                <div className="flex-none p-4 bg-white border-t border-slate-100 z-10 flex justify-end gap-3 sticky bottom-0">
+                    <button
+                         onClick={onClose}
+                         className="px-6 py-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition-colors font-semibold text-sm"
+                    >
+                        Close Details
+                    </button>
                 </div>
             </div>
         </div>
@@ -181,14 +200,17 @@ export function PatientDetailsModal({
 // Section component
 function Section({
     title,
+    colorClass,
     children,
 }: {
     title: string;
+    colorClass: string;
     children: React.ReactNode;
 }) {
     return (
-        <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-3 pb-2 border-b border-gray-200">
+        <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-5 flex items-center gap-2">
+                <span className={`w-1.5 h-4 ${colorClass} rounded-full`}></span>
                 {title}
             </h3>
             {children}
@@ -197,22 +219,39 @@ function Section({
 }
 
 // Field component
-function Field({ label, value }: { label: string; value: string }) {
+function Field({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
     return (
-        <div>
-            <div className="text-sm font-medium text-gray-500 mb-1">{label}</div>
-            <div className="text-base text-gray-900">{value}</div>
+        <div className={highlight ? 'bg-slate-50 p-4 rounded-xl border border-slate-100' : ''}>
+            <div className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1.5">{label}</div>
+            <div className={`text-sm ${highlight ? 'font-medium text-slate-800' : 'text-slate-700'}`}>{value}</div>
         </div>
     );
+}
+
+function StatusCard({ label, value, index }: { label: string; value?: string; index: number }) {
+    if (!value) return null;
+    return (
+        <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
+             <div className="flex items-center gap-2 mb-1">
+                 <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-600 text-[10px] font-bold">
+                     {index}
+                 </span>
+                 <span className="text-xs font-medium text-slate-500">{label}</span>
+             </div>
+             <div className="text-sm font-semibold text-slate-700 ml-7">
+                 {value}
+             </div>
+        </div>
+    )
 }
 
 // Date formatting utilities
 function formatDate(date: Date | undefined): string {
     if (!date) return 'N/A';
     return new Intl.DateTimeFormat("en-US", {
-        weekday: "long",
+        weekday: "short",
         year: "numeric",
-        month: "long",
+        month: "short",
         day: "numeric",
     }).format(date);
 }
