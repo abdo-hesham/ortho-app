@@ -8,7 +8,7 @@ import { DashboardHeader } from './DashboardHeader';
 import { DashboardSidebar } from './DashboardSidebar';
 import { MobileBottomNav } from './MobileBottomNav';
 import { useRequireAuth } from '@/hooks/useAuth';
-import { LoadingSpinner } from '../ui/LoadingSpinner';
+import { GlobalLoader } from '../ui/GlobalLoader';
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
@@ -19,7 +19,7 @@ export const DashboardLayout = ({ children, onAddClick }: DashboardLayoutProps) 
     const { loading } = useRequireAuth();
 
     if (loading) {
-        return <LoadingSpinner />;
+        return <GlobalLoader />;
     }
 
     return (

@@ -8,7 +8,7 @@ import { useState, FormEvent, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useRedirectIfAuthenticated } from '@/hooks/useAuth';
-import { LoadingSpinner, SpinnerSmall } from '@/components';
+import { SpinnerSmall, GlobalLoader } from '@/components';
 
 export default function SignInPage() {
     const [email, setEmail] = useState('');
@@ -23,7 +23,7 @@ export default function SignInPage() {
     const redirectPath = searchParams.get('redirect') || '/dashboard';
 
     if (authLoading) {
-        return <LoadingSpinner />;
+        return <GlobalLoader />;
     }
 
     const handleSubmit = async (e: FormEvent) => {
@@ -108,17 +108,7 @@ export default function SignInPage() {
                             )}
                         </button>
                     </form>
-
-                    {/* Additional Links */}
-                    <div className="mt-6 text-center text-sm text-gray-600">
-                        <p>Demo credentials will be provided separately</p>
-                    </div>
                 </div>
-
-                {/* Footer */}
-                <p className="text-center text-sm text-gray-600 mt-6">
-                    Secure medical practice management system
-                </p>
             </div>
         </div>
     );

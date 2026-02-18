@@ -9,4 +9,5 @@ export { DashboardSidebar } from "./layout/DashboardSidebar";
 export { MobileBottomNav } from "./layout/MobileBottomNav";
 
 // UI Components
-export { LoadingSpinner, SpinnerSmall } from "./ui/LoadingSpinner";
+export { SpinnerSmall } from "./ui/LoadingSpinner";
+export { GlobalLoader } from "./ui/GlobalLoader";

@@ -13,11 +13,12 @@ interface FormInputWithVoiceProps extends React.InputHTMLAttributes<HTMLInputEle
     error?: string;
     helperText?: string;
     required?: boolean;
+    voiceIcon?:boolean;
     onVoiceTranscript?: (text: string) => void;
 }
 
 export const FormInputWithVoice = forwardRef<HTMLInputElement, FormInputWithVoiceProps>(
-    ({ label, error, helperText, required, className = "", onVoiceTranscript, ...props }, ref) => {
+    ({ label, error, helperText, required, voiceIcon=true, className = "", onVoiceTranscript, ...props }, ref) => {
         const voiceOptions = useMemo(() => ({
             onTranscriptionComplete: onVoiceTranscript,
         }), [onVoiceTranscript]);
@@ -70,6 +71,7 @@ export const FormInputWithVoice = forwardRef<HTMLInputElement, FormInputWithVoic
                     />
 
                     {/* Voice Recording Button */}
+                    {voiceIcon && (
                     <button
                         type="button"
                         onClick={handleVoiceClick}
@@ -133,6 +135,7 @@ export const FormInputWithVoice = forwardRef<HTMLInputElement, FormInputWithVoic
                             <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-white rounded-full animate-ping" />
                         )}
                     </button>
+                    )}
 
                     {/* Recording duration */}
                     {isRecording && (

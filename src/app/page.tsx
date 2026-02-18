@@ -7,7 +7,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { LoadingSpinner } from '@/components';
+import { GlobalLoader } from '@/components/ui/GlobalLoader';
 
 export default function Home() {
   const router = useRouter();
@@ -23,5 +23,5 @@ export default function Home() {
     }
   }, [user, loading, router]);
 
-  return <LoadingSpinner />;
+  return <GlobalLoader />;
 }

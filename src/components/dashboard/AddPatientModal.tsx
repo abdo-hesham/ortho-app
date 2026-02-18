@@ -333,7 +333,7 @@ export function AddPatientModal({
                                 <FormInputWithVoice
                                     label="Age"
                                     name="age"
-                                    type="number"
+                                    type="text"
                                     value={formData.age}
                                     onChange={handleChange}
                                     onVoiceTranscript={(text) => handleFieldVoice('age', text)}
@@ -349,6 +349,7 @@ export function AddPatientModal({
                                         label="Date"
                                         name="date"
                                         type="date"
+                                        voiceIcon={false}
                                         value={formData.date}
                                         onChange={handleChange}
                                         onVoiceTranscript={(text) => handleFieldVoice('date', text)}

@@ -14,7 +14,10 @@ import { SearchBar } from "@/components/dashboard/SearchBar";
 import { getAllPatients, searchPatients } from "@/lib/firebase/patients";
 import type { Patient } from "@/types/patient";
 
+
 import { GlobalLoader } from "@/components/ui/GlobalLoader";
+import { SpinnerSmall } from "@/components";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -26,12 +29,24 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  
+  // Mobile Infinite Scroll State
+  const [visibleMobileCount, setVisibleMobileCount] = useState(3);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  
+  const [loadMoreRef, observerEntry] = useIntersectionObserver({
+    threshold: 0.1,
+    rootMargin: '100px',
+  });
+
+  const isAtBottom = !!observerEntry?.isIntersecting;
 
   // Fetch patients function
   const fetchPatients = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
+      setVisibleMobileCount(3); // Reset count on fetch
       const data = await getAllPatients();
       setPatients(data);
       setFilteredPatients(data);
@@ -52,6 +67,7 @@ export default function DashboardPage() {
   const handleSearch = useCallback(
     async (query: string) => {
       setSearchQuery(query);
+      setVisibleMobileCount(3); // Reset count on search
 
       if (!query.trim()) {
         setFilteredPatients(patients);
@@ -76,6 +92,25 @@ export default function DashboardPage() {
     },
     [patients, searchQuery],
   );
+
+  // 1. Hook to detect intersection and set loading state
+  useEffect(() => {
+    if (isAtBottom && !isLoadingMore && !isLoading && filteredPatients.length > visibleMobileCount) {
+      setIsLoadingMore(true);
+    }
+  }, [isAtBottom, isLoadingMore, isLoading, filteredPatients.length, visibleMobileCount]);
+
+  // 2. Hook to handle the 1s delay and increment the count
+  useEffect(() => {
+    if (isLoadingMore) {
+      const timer = setTimeout(() => {
+        setVisibleMobileCount(prev => prev + 3);
+        setIsLoadingMore(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isLoadingMore]);
 
   // Handle row click
   const handleRowClick = (patient: Patient) => {
@@ -174,13 +209,38 @@ export default function DashboardPage() {
                 <p className="text-xs text-slate-500 mt-1">Try adjusting your search</p>
               </div>
             ) : (
-              filteredPatients.map((patient) => (
-                <PatientCard
-                  key={patient.id}
-                  patient={patient}
-                  onClick={handleRowClick}
-                />
-              ))
+              <>
+                {filteredPatients.slice(0, visibleMobileCount).map((patient) => (
+                  <PatientCard
+                    key={patient.id}
+                    patient={patient}
+                    onClick={handleRowClick}
+                  />
+                ))}
+                
+                {/* Loader & Intersection Target */}
+                {filteredPatients.length > visibleMobileCount && (
+                  <div className="py-8 flex flex-col items-center justify-center">
+                    {/* Intersection target is always here but invisible */}
+                    <div ref={loadMoreRef} className="h-4 w-full" />
+                    
+                    {/* Animated Loader showing only when active */}
+                    {isLoadingMore && (
+                      <div className="flex flex-col items-center gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                        <div className="relative">
+                          <div className="w-12 h-12 border-4 border-blue-100 rounded-full animate-ping opacity-20"></div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <SpinnerSmall />
+                          </div>
+                        </div>
+                        <p className="text-xs font-bold text-blue-600 tracking-wider uppercase animate-pulse">
+                          Loading more patients...
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
